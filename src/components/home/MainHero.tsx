@@ -1,19 +1,33 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export function MainHero() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.muted = true;
+      video.play().catch(() => {
+        // Autoplay was prevented, silently ignore
+      });
+    }
+  }, []);
+
   return (
     <section className="relative w-full h-[60vh] md:h-screen overflow-hidden">
       {/* Video Background */}
       <video
+        ref={videoRef}
         className="absolute top-0 left-0 w-full h-full object-cover"
         autoPlay
         loop
         muted
         playsInline
+        preload="auto"
       >
         <source src="/assets/video.mp4" type="video/mp4" />
         Your browser does not support the video tag.
